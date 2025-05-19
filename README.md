@@ -24,6 +24,9 @@ Strategy: Define los comportamientos de los bichos (BichoPerezoso, BichoAgresivo
 
 Composite: Modela la estructura del laberinto, permitiendo tratar habitaciones y elementos de manera uniforme.
 
+![image](https://github.com/user-attachments/assets/c9814ee6-2680-4bb3-95ed-da839d0f6510)
+![image](https://github.com/user-attachments/assets/519146c8-30f2-4b0c-a0ee-de7ab49d65df)
+
 ## Ejemplo de Uso
 
 Al ejecutar el juego, el sistema te guiará a través del laberinto. Puedes moverte utilizando las teclas:
