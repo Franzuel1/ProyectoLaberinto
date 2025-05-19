@@ -1,43 +1,15 @@
-from abc import ABC, abstractmethod
-from juego import Habitacion, Bomba, BichoPerezoso, BichoAgresivo
+from juego import Habitacion, Laberinto, Pared, Puerta
 
-class Creator(ABC):
-    @abstractmethod
+class Creator:
+    def crear_habitacion(self, num):
+        return Habitacion(num)
+
     def crear_laberinto(self):
-        pass
+        return Laberinto()
 
-class CreatorBasico(Creator):
-    def crear_laberinto(self):
-        # Crear las habitaciones
-        habitacion1 = Habitacion("Habitación 1")
-        habitacion2 = Habitacion("Habitación 2")
+    def crear_pared(self):
+        return Pared()
 
-        # Conectar habitaciones
-        habitacion1.establecer_conexion("norte", habitacion2)
-        habitacion2.establecer_conexion("sur", habitacion1)
+    def crear_puerta(self, lado1, lado2):
+        return Puerta(lado1, lado2)
 
-        # Añadir elementos a las habitaciones
-        habitacion1.agregar_elemento(Bomba())
-        habitacion2.agregar_elemento(BichoPerezoso())
-
-        return habitacion1
-
-class CreatorAvanzado(Creator):
-    def crear_laberinto(self):
-        # Crear más habitaciones
-        habitacion1 = Habitacion("Entrada")
-        habitacion2 = Habitacion("Pasillo")
-        habitacion3 = Habitacion("Sala de tesoro")
-
-        # Conectar habitaciones
-        habitacion1.establecer_conexion("este", habitacion2)
-        habitacion2.establecer_conexion("oeste", habitacion1)
-        habitacion2.establecer_conexion("norte", habitacion3)
-        habitacion3.establecer_conexion("sur", habitacion2)
-
-        # Añadir elementos variados
-        habitacion1.agregar_elemento(BichoPerezoso())
-        habitacion2.agregar_elemento(Bomba())
-        habitacion3.agregar_elemento(BichoAgresivo())
-
-        return habitacion1

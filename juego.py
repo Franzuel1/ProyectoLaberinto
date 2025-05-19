@@ -1,43 +1,64 @@
 from creator import Creator
 
+class ElementoMapa:
+    def __init__(self):
+        pass
+
+class Habitacion(ElementoMapa):
+    def __init__(self, num):
+        super().__init__()
+        self.num = num
+        self.norte = Pared()
+        self.sur = Pared()
+        self.este = Pared()
+        self.oeste = Pared()
+
+class Laberinto(ElementoMapa):
+    def __init__(self):
+        super().__init__()
+        self.habitaciones = []
+
+    def agregar_habitacion(self, habitacion):
+        self.habitaciones.append(habitacion)
+
+class Pared(ElementoMapa):
+    def __init__(self):
+        super().__init__()
+
+class Puerta:
+    def __init__(self, lado1, lado2):
+        self.abierta = False
+        self.lado1 = lado1
+        self.lado2 = lado2
+
+    def abrir(self):
+        self.abierta = True
+
+    def cerrar(self):
+        self.abierta = False
+
 class Juego:
-    def __init__(self, creator):
-        if not isinstance(creator, Creator):
-            raise TypeError("El parámetro 'creator' debe ser una instancia de la clase Creator")
-        self.creator = creator
-        self.laberinto = None
+    def __init__(self):
+        self.laberinto = Laberinto()
 
     def iniciar_juego(self):
-        print("Iniciando el juego del laberinto...")
-        self.laberinto = self.creator.crear_laberinto()
+        # Lógica para iniciar el juego
+        pass
 
-    def jugar(self):
-        if not self.laberinto:
-            print("¡Primero debes iniciar el juego!")
-            return
+    def crearLaberinto2HabFM(self, creator):
+        laberinto = creator.crear_laberinto()
+        habitacion1 = creator.crear_habitacion(1)
+        habitacion2 = creator.crear_habitacion(2)
+        puerta = creator.crear_puerta(habitacion1, habitacion2)
+        habitacion1.sur = puerta
+        habitacion2.norte = puerta
+        laberinto.agregar_habitacion(habitacion1)
+        laberinto.agregar_habitacion(habitacion2)
+        return laberinto
 
-        print("¡Bienvenido al laberinto!")
-        jugador = self.laberinto.obtener_jugador()
-
-        while not jugador.ha_ganado():
-            print("\nUbicación actual:", jugador.ubicacion)
-            print("Salidas disponibles:", jugador.ubicacion.obtener_salidas())
-
-            movimiento = input("¿A dónde quieres ir? (N/S/E/O): ").strip().upper()
-
-            if movimiento in ["N", "S", "E", "O"]:
-                jugador.mover(movimiento)
-            else:
-                print("Movimiento no válido. Usa N, S, E, O.")
-
-            if jugador.esta_muerto():
-                print("¡Has muerto! Fin del juego.")
-                return
-
-        print("¡Felicidades! Has salido del laberinto.")
-
-if __name__ == "__main__":
-    from creator import CreatorBasico
-    juego = Juego(CreatorBasico())
-    juego.iniciar_juego()
-    juego.jugar()
+#ejemplo de uso
+creator = Creator()
+juego = Juego()
+juego.laberinto = juego.crearLaberinto2HabFM(creator)
+print(juego.laberinto.habitaciones[0].num)
+print(juego.laberinto.habitaciones[1].num)
