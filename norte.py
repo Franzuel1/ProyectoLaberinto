@@ -1,5 +1,5 @@
 from orientacion import Orientacion
-
+from point import Point
 class Norte(Orientacion):
     _instance = None
 
@@ -20,3 +20,12 @@ class Norte(Orientacion):
 
     def obtenerElemento(self, forma):
         return forma.norte
+
+    def caminarAleatorio(self, bicho, forma):
+        forma.norte.entrar(bicho)
+
+    def aceptar(self, unVisitor, forma):
+        forma.norte.aceptar(unVisitor)
+    def calcularPosicionDesde(self, forma):
+        unPunto=Point(forma.punto.x,forma.punto.y-1)
+        forma.norte.calcularPosicionDesdeEn(forma,unPunto)
