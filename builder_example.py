@@ -1,34 +1,32 @@
 from director import Director
-from laberinto_builder import LaberintoBuilder
-from laberinto import Laberinto
-from habitacion import Habitacion
-from puerta import Puerta
 import time
 
 director = Director()
 
-filename = "./laberintos/lab2HabTunel.json"
+# Cambia esta línea para apuntar al archivo que incluye al BichoLoco
+filename = "./laberintos/laberinto_bicholoco.json"
 
 data = director.leerArchivo(filename)
 if data:
-    print("Data from JSON file:")
+    print("Datos cargados del JSON:")
     print(data)
 else:
-    print("Failed to read data from JSON file.")
+    print("Error al cargar JSON.")
 
-juego = director.procesar(filename)
+director.procesar(filename)
 juego = director.obtenerJuego()
 
-# Ejemplo de uso de recorrer con print
+# Ejemplo de recorrido del laberinto
 print("\nRecorriendo el laberinto e imprimiendo:")
 juego.laberinto.recorrer(print)
 
-#mostrar los bichos del juego
+# Mostrar los bichos del juego (debe aparecer aquí el BichoLoco)
 for bicho in juego.bichos:
     print(bicho)
     print(f"Bicho con {bicho.vidas} vidas y {bicho.poder} de poder")
     print(f"Posición {bicho.posicion.num}")
 
+# Abrir puertas y lanzar los bichos
 juego.abrir_puertas()
 juego.lanzarBichos()
 time.sleep(3)

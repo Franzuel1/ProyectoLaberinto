@@ -1,6 +1,8 @@
 import json
 from laberinto_builder import LaberintoBuilder
-
+from bicholoco import BichoLoco
+from agresivo import Agresivo
+from perezoso import Perezoso
 
 class Director:
     def __init__(self):
@@ -60,5 +62,16 @@ class Director:
             return None
 
     def fabricarBichos(self):
-        for each in self.dict['bichos']:
-            self.builder.fabricarBicho(each['modo'],each['posicion'])
+        for bicho in self.dict["bichos"]:
+            pos = self.builder.obtenerHabitacion(bicho["posicion"])
+            if pos is None:
+                continue  # Protege de errores si no se encuentra la habitación
+            if bicho.get("tipo") == "bicholoco":
+                nuevo_bicho = self.builder.crear_bicholoco(pos)
+            else:
+                modo = bicho["modo"]
+                if modo == "Agresivo":
+                    nuevo_bicho = self.builder.crear_bicho(3, 1, pos, Agresivo())
+                elif modo == "Perezoso":
+                    nuevo_bicho = self.builder.crear_bicho(3, 1, pos, Perezoso())
+            self.builder.juego.agregar_ente(nuevo_bicho)

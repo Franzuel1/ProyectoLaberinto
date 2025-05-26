@@ -5,6 +5,8 @@ from este import Este
 from oeste import Oeste
 from orientacion import Orientacion
 from cuadrado import Cuadrado
+from bicholoco import BichoLoco
+
 class Creator:
     def crear_habitacion(self, num):
         habitacion = Habitacion(num)
@@ -57,6 +59,12 @@ class Creator:
         bicho.poder=poder
         bicho.posicion=posicion
         bicho.modo=modo
+        return bicho
+    
+    def crear_bicholoco(self, posicion):
+        bicho = BichoLoco()
+        bicho.posicion = posicion
+        posicion.agregar_hijo(bicho)
         return bicho
 
     def crear_modo_agresivo(self):

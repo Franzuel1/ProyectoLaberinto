@@ -108,3 +108,27 @@ class LaberintoBuilder:
         hab=self.laberinto.obtenerHabitacion(posicion)
         hab.entrar(bicho)
         self.juego.agregar_bicho(bicho)
+
+    def obtenerHabitacion(self, num):
+        for habitacion in self.laberinto.hijos:
+            if habitacion.num == num:
+                return habitacion
+        return None
+    
+    def crear_bicho(self, vidas, poder, posicion, modo):
+        bicho = Bicho()
+        bicho.vidas = vidas
+        bicho.poder = poder
+        bicho.posicion = posicion
+        bicho.modo = modo
+        posicion.agregar_hijo(bicho)
+        return bicho
+
+    def crear_bicholoco(self, posicion):
+        from bicholoco import BichoLoco
+        bicho = BichoLoco()
+        bicho.vidas = 3        # o el número de vidas que prefieras
+        bicho.poder = 1        # o el poder que prefieras
+        bicho.posicion = posicion
+        posicion.agregar_hijo(bicho)
+        return bicho
