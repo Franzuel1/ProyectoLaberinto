@@ -14,8 +14,18 @@ else:
 director.procesar(filename)
 juego = director.obtenerJuego()
 
-# 1.CREA EL PERSONAJE ANTES DE ABRIR PUERTAS
+# 1. CREA EL PERSONAJE ANTES DE ABRIR PUERTAS
 juego.agregar_personaje("Jugador")
+
+# 1.1. SIMULAMOS QUE EL PERSONAJE ENTRA EN LA HABITACIÓN 2 (cofre de puntos)
+hab2 = juego.obtenerHabitacion(2)
+juego.personaje.posicion = hab2
+hab2.entrar(juego.personaje)  # Esto debería desencadenar la recogida del cofre si está bien implementado
+
+# 1.2. SIMULAMOS QUE EL PERSONAJE ENTRA EN LA HABITACIÓN 3 (cofre de llaves)
+hab3 = juego.obtenerHabitacion(3)
+juego.personaje.posicion = hab3
+hab3.entrar(juego.personaje)  # Esto debería desencadenar la recogida del cofre si está bien implementado
 
 # Ejemplo de recorrido del laberinto
 print("\nRecorriendo el laberinto e imprimiendo:")
@@ -27,7 +37,7 @@ for bicho in juego.bichos:
     print(f"Bicho con {bicho.vidas} vidas y {bicho.poder} de poder")
     print(f"Posición {bicho.posicion.num}")
 
-# 2.ABRIR PUERTAS USANDO EL PERSONAJE (gestiona llaves)
+# 2. ABRIR PUERTAS USANDO EL PERSONAJE (gestiona llaves)
 juego.abrir_puertas_con_personaje()
 
 juego.lanzarBichos()

@@ -19,6 +19,5 @@ class Personaje(Ente):
         self.nombre = nombre
         self.llaves = 1 # Le damos 1 llave
 
-
     def clonarLaberinto(self,tunel):
         tunel.puedeClonarLaberinto()

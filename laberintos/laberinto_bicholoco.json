@@ -1,19 +1,39 @@
 {
-	"forma": "cuadrado",
-	"laberinto": [
-		{"tipo": "habitacion", "num": 1, "hijos": [{"tipo": "bomba"}]},
-		{"tipo": "habitacion", "num": 2, "hijos": []},
-		{"tipo": "habitacion", "num": 3, "hijos": []},
-		{"tipo": "habitacion", "num": 4, "hijos": [{"tipo": "bomba"}]}
-	],
-	"puertas": [
-		[1, "Sur", 2, "Norte", {"bloqueada": true}],
-		[2, "Oeste", 3, "Este"],
-		[3, "Sur", 4, "Norte"]
-	],
-	"bichos": [
-		{"modo": "Agresivo", "posicion": 1},
-		{"modo": "Perezoso", "posicion": 4},
-		{"tipo": "bicholoco", "posicion": 2}
-	]
+    "forma": "cuadrado",
+    "laberinto": [
+        {"tipo": "habitacion", "num": 1, "hijos": [{"tipo": "bomba"}]},
+        {
+            "tipo": "habitacion",
+            "num": 2,
+            "hijos": [
+                {
+                    "tipo": "cofre",
+                    "tipo_recompensa": "puntos",
+                    "cantidad": 12
+                }
+            ]
+        },
+        {
+            "tipo": "habitacion",
+            "num": 3,
+            "hijos": [
+                {
+                    "tipo": "cofre",
+                    "tipo_recompensa": "llaves",
+                    "cantidad": 2
+                }
+            ]
+        },
+        {"tipo": "habitacion", "num": 4, "hijos": [{"tipo": "bomba"}]}
+    ],
+    "puertas": [
+        [1, "Sur", 2, "Norte", {"bloqueada": true}],
+        [2, "Oeste", 3, "Este"],
+        [3, "Sur", 4, "Norte"]
+    ],
+    "bichos": [
+        {"modo": "Agresivo", "posicion": 1},
+        {"modo": "Perezoso", "posicion": 4},
+        {"tipo": "bicholoco", "posicion": 2}
+    ]
 }

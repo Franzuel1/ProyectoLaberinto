@@ -3,6 +3,7 @@ from laberinto_builder import LaberintoBuilder
 from bicholoco import BichoLoco
 from agresivo import Agresivo
 from perezoso import Perezoso
+from cofre import Cofre
 
 class Director:
     def __init__(self):
@@ -38,16 +39,21 @@ class Director:
             else:
                 self.builder.fabricarPuerta(each[0], each[1], each[2], each[3])
 
-	
-    def fabricarLaberintoRecursivo(self,each,padre):
+    def fabricarLaberintoRecursivo(self, each, padre):
         print(each)
-        if each['tipo']=='habitacion':
-            con=self.builder.fabricarHabitacion(each['num'])
-        if each['tipo']=='tunel':
+        if each['tipo'] == 'habitacion':
+            con = self.builder.fabricarHabitacion(each['num'])
+        if each['tipo'] == 'tunel':
             self.builder.fabricarTunelEn(padre)
-        if 'hijos'in each.keys():
+        if 'hijos' in each.keys():
             for cadaUno in each['hijos']:
-                self.fabricarLaberintoRecursivo(cadaUno,con)
+                if cadaUno.get("tipo") == "cofre":
+                    tipo_recompensa = cadaUno.get("tipo_recompensa")
+                    cantidad = cadaUno.get("cantidad")
+                    cofre = Cofre(tipo=tipo_recompensa, cantidad=cantidad)
+                    con.agregar_hijo(cofre)
+                else:
+                    self.fabricarLaberintoRecursivo(cadaUno, con)
 
     def leerArchivo(self, filename):
         try:
