@@ -2,8 +2,6 @@ from director import Director
 import time
 
 director = Director()
-
-# Cambia esta línea para apuntar al archivo que incluye al BichoLoco
 filename = "./laberintos/laberinto_bicholoco.json"
 
 data = director.leerArchivo(filename)
@@ -16,6 +14,9 @@ else:
 director.procesar(filename)
 juego = director.obtenerJuego()
 
+# 1.CREA EL PERSONAJE ANTES DE ABRIR PUERTAS
+juego.agregar_personaje("Jugador")
+
 # Ejemplo de recorrido del laberinto
 print("\nRecorriendo el laberinto e imprimiendo:")
 juego.laberinto.recorrer(print)
@@ -26,17 +27,17 @@ for bicho in juego.bichos:
     print(f"Bicho con {bicho.vidas} vidas y {bicho.poder} de poder")
     print(f"Posición {bicho.posicion.num}")
 
-# Abrir puertas y lanzar los bichos
-juego.abrir_puertas()
+# 2.ABRIR PUERTAS USANDO EL PERSONAJE (gestiona llaves)
+juego.abrir_puertas_con_personaje()
+
 juego.lanzarBichos()
 time.sleep(3)
 juego.terminarBichos()
 
 # Terminar bichos y parar el cronómetro (simulación)
-import time
-time.sleep(10)  # Dejar que el juego corra 20 segundos
+time.sleep(10)
 juego.finalizar_cronometro()
-juego.sumar_puntos(juego.tiempo_total())  # 1 punto por cada turno restante
+juego.sumar_puntos(juego.tiempo_total())  # 1 punto por cada segundo restante
 
 print(f"Tiempo total de partida: {juego.tiempo_total():.2f} segundos")
 print(f"Puntuación final: {juego.puntuacion}")

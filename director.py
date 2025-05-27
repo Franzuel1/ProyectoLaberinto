@@ -32,11 +32,12 @@ class Director:
             self.fabricarLaberintoRecursivo(each,'root')
         
         for each in self.dict['puertas']:
-            self.builder.fabricarPuerta(each[0],each[1],each[2],each[3]) 
-	
-        #recorrer la colección de puertas para fabricarlas
-        for each in self.dict['puertas']:
-            self.builder.fabricarPuerta(each[0],each[1],each[2],each[3])    
+            # Soporta puertas normales y puertas bloqueadas (con 5 elementos y el diccionario de opciones)
+            if len(each) == 5 and isinstance(each[4], dict) and "bloqueada" in each[4]:
+                self.builder.fabricarPuerta(each[0], each[1], each[2], each[3], bloqueada=each[4]["bloqueada"])
+            else:
+                self.builder.fabricarPuerta(each[0], each[1], each[2], each[3])
+
 	
     def fabricarLaberintoRecursivo(self,each,padre):
         print(each)

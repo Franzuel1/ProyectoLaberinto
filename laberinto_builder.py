@@ -44,14 +44,15 @@ class LaberintoBuilder:
     def fabricarPared(self):
         return Pared()
 
-    def fabricarPuerta(self, lado1,o1,lado2,o2):
-        hab1=self.laberinto.obtenerHabitacion(lado1)
-        hab2=self.laberinto.obtenerHabitacion(lado2)
-        puerta=Puerta(hab1,hab2)
-        objOr1=self.obtenerObjeto(o1)
-        objOr2=self.obtenerObjeto(o2)
-        hab1.ponerElementoEnOrientacion(puerta,objOr1)
-        hab2.ponerElementoEnOrientacion(puerta,objOr2)
+    def fabricarPuerta(self, lado1, o1, lado2, o2, bloqueada=False):
+        hab1 = self.laberinto.obtenerHabitacion(lado1)
+        hab2 = self.laberinto.obtenerHabitacion(lado2)
+        puerta = Puerta(hab1, hab2, bloqueada=bloqueada)
+        objOr1 = self.obtenerObjeto(o1)
+        objOr2 = self.obtenerObjeto(o2)
+        hab1.ponerElementoEnOrientacion(puerta, objOr1)
+        hab2.ponerElementoEnOrientacion(puerta, objOr2)
+
     
     def obtenerObjeto(self,cadena):
         obj=None

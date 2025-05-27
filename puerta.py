@@ -2,11 +2,13 @@ from elemento_mapa import ElementoMapa
 from estado_puerta import Cerrada
 
 class Puerta(ElementoMapa):
-    def __init__(self, lado1, lado2):
+    def __init__(self, lado1, lado2, bloqueada=False):
         self.lado1 = lado1
         self.lado2 = lado2
         self.visitada = False
         self.estadoPuerta = Cerrada()
+        self.bloqueada = bloqueada
+        self.abierta = False
 
     def entrar(self, alguien):
         self.estadoPuerta.entrar(self, alguien)
@@ -18,9 +20,21 @@ class Puerta(ElementoMapa):
         else:
             self.lado1.entrar(alguien)
 
-    def abrir(self):
-        print("Abriendo puerta")
-        self.estadoPuerta.abrir(self)
+    def abrir(self, tiene_llave=False):
+        if self.bloqueada:
+            if tiene_llave:
+                print("Has usado una llave para abrir la puerta bloqueada.")
+                self.bloqueada = False
+                self.abierta = True
+            else:
+                print("¡La puerta está bloqueada! Necesitas una llave.")
+        else:
+            if not self.abierta:
+                print("Abriendo la puerta normalmente.")
+                self.abierta = True
+            else:
+                print("La puerta ya está abierta")
+
 
     def cerrar(self):
         print("Cerrando puerta")

@@ -87,6 +87,8 @@ class Juego:
     def agregar_personaje(self, nombre):
         self.personaje = Personaje(10, 1, self, nombre)
         self.laberinto.entrar(self.personaje)
+        self.personaje.llaves = 1  # Le damos 1 llave
+
 
     def buscarPersonaje(self,bicho):
         if bicho.posicion == self.personaje.posicion:
@@ -100,6 +102,24 @@ class Juego:
                 obj.abrir()
                 self.sumar_puntos(5)  # Sumar 5 puntos por abrir puerta
         self.laberinto.recorrer(abrirPuertas)
+
+    def abrir_puertas_con_personaje(self):
+        def abrirPuertas(obj):
+            if hasattr(obj, "esPuerta") and obj.esPuerta():
+                print(f"Intentando abrir puerta", obj)
+                print(f"El personaje tiene {self.personaje.llaves} llaves antes de intentar abrir.")
+                if obj.bloqueada:
+                    if self.personaje.llaves > 0:
+                        obj.abrir(tiene_llave=True)
+                        self.personaje.llaves -= 1
+                        print("¡Has usado una llave! Llaves restantes:", self.personaje.llaves)
+                    else:
+                        obj.abrir(tiene_llave=False)
+                else:
+                    obj.abrir()
+                self.sumar_puntos(5) # Sumar 5 puntos por abrir puerta
+        self.laberinto.recorrer(abrirPuertas)
+
 
     def cerrar_puertas(self):
         def cerrarPuertas(obj):
