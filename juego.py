@@ -27,6 +27,8 @@ class Juego:
         # CRONÓMETRO EXTRA:
         self.tiempo_inicio = None
         self.tiempo_fin = None
+        # PUNTUACIÓN:
+        self.puntuacion = 0
 
     def iniciar_cronometro(self):
         self.tiempo_inicio = time.time()
@@ -40,6 +42,15 @@ class Juego:
         if self.tiempo_fin is None:
             return time.time() - self.tiempo_inicio
         return self.tiempo_fin - self.tiempo_inicio
+    
+    def sumar_puntos(self, puntos):
+        self.puntuacion += puntos
+        print(f"¡Has ganado {puntos} puntos! Puntuación actual: {self.puntuacion}")
+
+    def restar_puntos(self, puntos):
+        self.puntuacion -= puntos
+        print(f"Has perdido {puntos} puntos. Puntuación actual: {self.puntuacion}")
+
 
     def clonarLaberinto(self):
         return copy.deepcopy(self.prototipo)
@@ -87,6 +98,7 @@ class Juego:
             if obj.esPuerta():
                 print(f"Abriendo puerta", obj)
                 obj.abrir()
+                self.sumar_puntos(5)  # Sumar 5 puntos por abrir puerta
         self.laberinto.recorrer(abrirPuertas)
 
     def cerrar_puertas(self):

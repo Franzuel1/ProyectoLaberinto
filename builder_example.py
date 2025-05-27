@@ -34,7 +34,9 @@ juego.terminarBichos()
 
 # Terminar bichos y parar el cronómetro (simulación)
 import time
-time.sleep(20)  # Dejar que el juego corra 20 segundos
+time.sleep(10)  # Dejar que el juego corra 20 segundos
 juego.finalizar_cronometro()
+juego.sumar_puntos(juego.tiempo_total())  # 1 punto por cada turno restante
 
 print(f"Tiempo total de partida: {juego.tiempo_total():.2f} segundos")
+print(f"Puntuación final: {juego.puntuacion}")
