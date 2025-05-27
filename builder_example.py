@@ -31,3 +31,10 @@ juego.abrir_puertas()
 juego.lanzarBichos()
 time.sleep(3)
 juego.terminarBichos()
+
+# Terminar bichos y parar el cronómetro (simulación)
+import time
+time.sleep(20)  # Dejar que el juego corra 20 segundos
+juego.finalizar_cronometro()
+
+print(f"Tiempo total de partida: {juego.tiempo_total():.2f} segundos")

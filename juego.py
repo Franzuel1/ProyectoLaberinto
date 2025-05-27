@@ -14,6 +14,7 @@ from pared import Pared
 from bomba import Bomba
 from pared_bomba import ParedBomba
 from ente import Personaje
+import time
 
 class Juego:
     def __init__(self):
@@ -23,6 +24,22 @@ class Juego:
         self.prototipo = None
         self.personaje = None
         self.bicho_threads = {}
+        # CRONÓMETRO EXTRA:
+        self.tiempo_inicio = None
+        self.tiempo_fin = None
+
+    def iniciar_cronometro(self):
+        self.tiempo_inicio = time.time()
+
+    def finalizar_cronometro(self):
+        self.tiempo_fin = time.time()
+
+    def tiempo_total(self):
+        if self.tiempo_inicio is None:
+            return 0
+        if self.tiempo_fin is None:
+            return time.time() - self.tiempo_inicio
+        return self.tiempo_fin - self.tiempo_inicio
 
     def clonarLaberinto(self):
         return copy.deepcopy(self.prototipo)
@@ -132,4 +149,5 @@ class Juego:
         return laberinto
 
     def terminarJuego(self):
+        Juego.finalizar_cronometro()
         self.terminarBichos()
