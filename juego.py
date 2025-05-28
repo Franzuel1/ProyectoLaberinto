@@ -27,6 +27,7 @@ class Juego:
         # CRONÓMETRO EXTRA:
         self.tiempo_inicio = None
         self.tiempo_fin = None
+        self.tiempo_maximo = 60
         # PUNTUACIÓN:
         self.puntuacion = 0
 
@@ -76,6 +77,15 @@ class Juego:
             for thread in self.bicho_threads[bicho]:
                 bicho.vidas = 0
 
+    def lanzarBicho(self, bicho):
+        import threading
+        thread = threading.Thread(target=bicho.actua)
+        thread.daemon = True
+        if bicho not in self.bicho_threads:
+            self.bicho_threads[bicho] = []
+        self.bicho_threads[bicho].append(thread)
+        thread.start()
+
     def lanzarBichos(self):
         for bicho in self.bichos:
             self.lanzarBicho(bicho)
@@ -105,7 +115,7 @@ class Juego:
 
     def abrir_puertas_con_personaje(self):
         def abrirPuertas(obj):
-            if hasattr(obj, "esPuerta") and obj.esPuerta():
+            if obj.esPuerta():
                 print(f"Intentando abrir puerta", obj)
                 print(f"El personaje tiene {self.personaje.llaves} llaves antes de intentar abrir.")
                 if obj.bloqueada:
@@ -119,7 +129,6 @@ class Juego:
                     obj.abrir()
                 self.sumar_puntos(5) # Sumar 5 puntos por abrir puerta
         self.laberinto.recorrer(abrirPuertas)
-
 
     def cerrar_puertas(self):
         def cerrarPuertas(obj):

@@ -6,15 +6,22 @@ class Habitacion(Contenedor):
         self.num = num
 
     def entrar(self, alguien):
-        print(f"Entrando en la habitación {self.num}")
+        print(f"--- ENTRANDO en la habitación {self.num} ---")
         alguien.posicion = self
-        # Buscar cofres y abrirlos
-        if hasattr(self, "hijos"):
+        # -- Cofres SOLO el personaje los abre --
+        if hasattr(self, "hijos") and type(alguien).__name__ == "Personaje":
             for hijo in self.hijos:
-                # Si es un cofre, lo abrimos
                 from cofre import Cofre
                 if isinstance(hijo, Cofre):
                     hijo.abrir(alguien, alguien.juego)
+        # Objetivo final: visitar todas las habitaciones
+        from ente import Personaje
+        if isinstance(alguien, Personaje):
+            alguien.habitaciones_visitadas.add(self.num)
+            total_habitaciones = len(alguien.juego.laberinto.hijos)
+            print(f"Habitaciones visitadas: {sorted(alguien.habitaciones_visitadas)} / {total_habitaciones}")
+            if len(alguien.habitaciones_visitadas) == total_habitaciones:
+                alguien.juego.finalizar_cronometro()
 
     def visitarContenedor(self, unVisitor):
         unVisitor.visitarHabitacion(self)

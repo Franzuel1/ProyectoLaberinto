@@ -1,6 +1,7 @@
 from modo import Modo
 from agresivo import Agresivo
 from ente import Ente
+import time
 
 class Bicho(Ente):
     def __init__(self):
@@ -11,8 +12,13 @@ class Bicho(Ente):
         self.posicion = None
 
     def actua(self):
-        while self.estaVivo():
-            self.modo.actuar(self)
+        while self.vidas > 0:
+            if self.modo:
+                self.modo.actuar(self)
+            else:
+                print("Bicho haciendo cosas...")
+            time.sleep(2) # Para evitar spam de prints
+        print("Bicho termina su hilo porque vidas <= 0")
 
     def iniAgresivo(self):
         self.modo = Agresivo()

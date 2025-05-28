@@ -18,6 +18,7 @@ class Personaje(Ente):
         self.juego = juego
         self.nombre = nombre
         self.llaves = 1 # Le damos 1 llave
+        self.habitaciones_visitadas = set() # Para llevar un registro de las habitaciones visitadas
 
     def clonarLaberinto(self,tunel):
         tunel.puedeClonarLaberinto()

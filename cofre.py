@@ -10,22 +10,19 @@ class Cofre:
         self.abierto = False
 
     def abrir(self, personaje, juego):
-        # Solo los personajes (no bichos) pueden abrir cofres
-        from ente import Personaje
-        if not isinstance(personaje, Personaje):
-            # Si no es el jugador, ignoramos el cofre
-            return
-
         if self.abierto:
             print("Este cofre ya se abrió antes.")
             return
         self.abierto = True
+        print("\n💎 --- COFRE ABIERTO --- 💎")
         if self.tipo == "puntos":
             juego.sumar_puntos(self.cantidad)
             print(f"¡Has encontrado un cofre con {self.cantidad} puntos!")
         elif self.tipo == "llaves":
             personaje.llaves += self.cantidad
             print(f"¡Has encontrado un cofre con {self.cantidad} llave(s)!")
+        print("💎 --------------------- 💎\n")
+
 
     def recorrer(self, func):
         func(self)
