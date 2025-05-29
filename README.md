@@ -1,81 +1,76 @@
-## Laberinto25 – Diseño y Expansión del Laberinto en Python
-# Proyecto de la asignatura Diseño de Software, curso 2024-25
-Este proyecto desarrolla la lógica y estructura de un videojuego de laberinto basado en patrones de diseño, con una arquitectura extensible y varias mecánicas adicionales. La inspiración parte de los ejemplos del libro "Design Patterns: Elements of Reusable Object-Oriented Programming", ampliando el juego clásico con nuevas funcionalidades orientadas a la jugabilidad y la demostración de principios SOLID.
+# Laberinto25 – Juego de Laberinto en Python
+
+### Proyecto para la asignatura Diseño de Software, curso 2024-25
+
+Este proyecto implementa la lógica y mecánicas de un videojuego de laberinto basado en patrones de diseño orientados a objetos. Es una evolución del ejemplo clásico de "Design Patterns: Elements of Reusable Object-Oriented Programming", incorporando nuevas funcionalidades que enriquecen la experiencia de juego y la arquitectura software.
+
+---
 
 ## Descripción General
-El sistema implementa un laberinto compuesto por habitaciones conectadas mediante puertas, algunas de ellas bloqueadas, con trampas (bombas), enemigos con distintos comportamientos y un sistema de recompensas. El jugador debe recorrer el laberinto, evitar o enfrentarse a los enemigos y recoger tesoros o llaves, todo ello gestionado mediante un cronómetro y una puntuación dinámica.
 
-## Patrones de Diseño Utilizados
-El código hace uso de múltiples patrones de diseño clásicos, adaptados para modelar tanto la estructura del juego como el comportamiento de los entes y objetos del laberinto:
+El sistema modela un laberinto compuesto por habitaciones conectadas por puertas (algunas de ellas bloqueadas con llave), cofres de recompensa, trampas, y enemigos con IA concurrente. El objetivo principal del jugador es **visitar todas las habitaciones del laberinto**, gestionando recursos como llaves y puntuación, todo ello bajo la presión de un cronómetro y la amenaza de los enemigos.
 
-# Factory Method
-Permite la creación flexible y escalable de habitaciones, paredes, puertas y otros elementos del mapa, facilitando la extensión mediante subclases específicas para habitaciones con bombas, bichos especiales, etc.
+---
 
-# Decorator
-Utilizado para añadir dinamismo a elementos como las paredes, a las que se les pueden incorporar bombas y otras responsabilidades adicionales sin modificar la clase base.
+## Principales Patrones de Diseño Utilizados
 
-# Strategy
-Cada enemigo ("bicho") puede comportarse de manera diferente gracias a la encapsulación de algoritmos de movimiento y ataque (por ejemplo, modos agresivo o perezoso), intercambiables en tiempo de ejecución.
+- **Factory Method:** Creación extensible de habitaciones, puertas, paredes y otros elementos.
+- **Decorator:** Añade dinamismo a elementos (por ejemplo, paredes con bombas).
+- **Strategy:** Permite distintos comportamientos de enemigos (agresivo, perezoso, aleatorio).
+- **Composite:** Permite recorrer y manipular la estructura jerárquica del laberinto.
+- **Builder + Director:** El laberinto se genera a partir de archivos JSON externos, facilitando la configuración y extensión.
+- **State:** Gestor de estados para puertas (abierta/cerrada/bloqueada) y entes (vivo/muerto).
+- **Command:** Acciones como abrir puertas o activar trampas se modelan como comandos.
+- **Visitor:** Recorrido polimórfico de los elementos del laberinto.
+- **Singleton:** Orientaciones del mapa implementadas como instancias únicas.
+- **Template Method:** Los modos de los bichos definen su algoritmo base.
+  
+---
 
-# Composite
-Estructura el laberinto y sus habitaciones permitiendo tratar uniformemente elementos individuales y colecciones (habitaciones, puertas, cofres, etc.), facilitando el recorrido y manipulación recursiva de la estructura del mapa.
+## Funcionalidades y Mecánicas Extra
 
-# Builder
-El laberinto se genera a partir de archivos JSON, que describen la forma, las habitaciones, las conexiones y los elementos extra (cofres, bichos, bombas, etc.). Un director interpreta este archivo y coordina el proceso de creación de todos los componentes del juego.
+### 1. **Bichos con Concurrencia y un nuevo tipo**
+Los enemigos se mueven y actúan de forma autónoma y paralela al jugador, pudiendo ser configurados como **agresivos**, **perezosos** o con comportamiento **aleatorio** (Bicho Loco).
 
-# State
-Aplicado a las puertas (abierta/cerrada/bloqueada) y a los entes (vivo/muerto), encapsulando el comportamiento dependiente del estado de cada objeto.
+### 2. **Puertas Bloqueadas con Llaves**
+Algunas puertas están cerradas con llave. El jugador solo puede pasar si tiene al menos una llave, que se gasta al cruzar. Si no dispone de llaves, el paso está bloqueado.
 
-# Command
-Todas las acciones importantes (abrir/cerrar puertas, activar bombas, entrar en habitaciones) están modeladas como comandos, lo que permite su gestión flexible, almacenamiento y posible deshacer.
+### 3. **Cofres de Recompensa**
+En ciertas habitaciones hay cofres, que solo el personaje puede abrir (no los bichos). Los cofres otorgan puntos o llaves al abrirlos, según la configuración del JSON. Los mensajes por consola informan de su apertura y del botín conseguido.
 
-# Visitor
-El patrón Visitor se utiliza para recorrer los distintos elementos del laberinto y permitir operaciones genéricas sobre los distintos tipos de objetos sin modificar sus clases.
+### 4. **Puntuación Dinámica**
+- Abrir puertas, recoger cofres y terminar rápido suma puntos.
+- El estado de la partida, con vidas, llaves, puntuación y habitaciones visitadas, se muestra en todo momento.
 
-# Singleton
-Las orientaciones (Norte, Sur, Este, Oeste) están modeladas como instancias únicas, evitando duplicidad y facilitando la comparación e interoperabilidad.
+### 5. **Cronómetro y Puntuación por Tiempo**
+El tiempo de la partida se mide automáticamente. **El tiempo restante se convierte en puntos extra** al completar el objetivo, premiando la eficiencia.
 
-# Template Method
-El método actua de los modos de los bichos utiliza este patrón, permitiendo definir el esqueleto de un algoritmo y delegar en subclases los pasos específicos (dormir, caminar, atacar, etc.).
+### 6. **Control por Comandos y Mensajería Clara**
+El jugador puede moverse escribiendo el número de habitación al que quiere ir. Se muestran mensajes claros tras cada acción, así como el estado actual (puntos, llaves, habitaciones visitadas, etc.).
 
-## Nuevas Funcionalidades y Extras Implementados
-Durante el desarrollo se han añadido varias mecánicas extra que enriquecen la experiencia de juego:
+### 7. **Final de la Partida**
+- El juego termina con victoria si se han visitado todas las habitaciones.
+- Si el tiempo máximo expira o si el jugador elige salir, la puntuación final se calcula en base a su progreso y el tiempo usado.
+- Se impide el paso por puertas bloqueadas sin llave, y los cofres ya abiertos no se pueden volver a abrir.
 
-# 1. Nuevos Tipos de Bichos
-Se ha incorporado un "Bicho Loco", un enemigo con comportamiento aleatorio que añade imprevisibilidad al recorrido del laberinto. Los bichos pueden estar en modo agresivo, perezoso, o loco, y son configurables desde el archivo JSON.
-
-# 2. Sistema de Cronómetro
-El juego mide el tiempo de la partida de forma precisa. El cronómetro comienza al iniciar el juego y puede consultarse o detenerse en cualquier momento, añadiendo un reto temporal o permitiendo crear rankings según la velocidad de resolución.
-
-# 3. Puntuación Dinámica
-Cada acción relevante en el juego suma o resta puntos: abrir puertas, superar enemigos o recoger recompensas. El sistema de puntos se actualiza en tiempo real, permitiendo evaluar la eficiencia del jugador al final de la partida.
-
-# 4. Puertas Bloqueadas y Llaves
-Algunas puertas del laberinto pueden estar bloqueadas y solo se abren utilizando una llave, la cual debe encontrarse durante el recorrido. El sistema de llaves es completamente funcional, controlando el acceso a zonas restringidas y añadiendo estrategia al uso de los recursos.
-
-# 5. Cofres y Recompensas Aleatorias
-En determinadas habitaciones pueden encontrarse cofres que otorgan recompensas al jugador. Al abrir un cofre (automáticamente al entrar el personaje), se recibe una cantidad de puntos o llaves, elegida de forma configurable o aleatoria. Los cofres no pueden ser abiertos por enemigos, sólo por el personaje principal.
+---
 
 ## Estructura del Proyecto
-juego.py: Lógica principal del juego y orquestación de los elementos.
 
-director.py y laberinto_builder.py: Patrones Builder/Director para interpretar el JSON y construir la estructura del laberinto.
+- `juego.py`: Lógica principal del juego, control de flujo, puntuación y tiempo.
+- `director.py`, `laberinto_builder.py`: Interpretación del archivo JSON y construcción dinámica del laberinto.
+- `habitacion.py`, `puerta.py`, `pared.py`, `bomba.py`: Elementos del mapa.
+- `bicho.py`, `bicholoco.py`, `agresivo.py`, `perezoso.py`, `modo.py`: IA y comportamientos de los enemigos.
+- `cofre.py`: Lógica de cofres de puntos y llaves.
+- `ente.py`: Base para personaje y enemigos.
+- `builder_example.py`: Script principal de ejecución y control por comandos.
+- `README.md`: Documentación y explicación del proyecto.
 
-habitacion.py, puerta.py, pared.py: Modelado de las habitaciones y conexiones.
-
-bicho.py, bicholoco.py: Enemigos y sus comportamientos.
-
-cofre.py: Implementación de los cofres de recompensa.
-
-ente.py: Clase base para personaje y bichos.
-
-README.md: Documentación y explicación detallada del proyecto.
+---
 
 ## Ejemplo de Archivo JSON de Configuración
-El siguiente es un ejemplo de cómo se puede definir un laberinto personalizado con enemigos, bombas, puertas bloqueadas y cofres de recompensa:
 
-json
-Copiar código
+```json
 {
   "forma": "cuadrado",
   "laberinto": [
@@ -100,15 +95,16 @@ Copiar código
   ]
 }
 
-## Cómo Ejecutar el Juego
-Modifica o crea tu archivo JSON de configuración en la carpeta /laberintos/.
+---
 
-Lanza el juego usando el script principal (builder_example.py o equivalente).
+## Cómo Jugar
+- Modifica o crea tu archivo JSON de configuración en /laberintos/.
+- Ejecuta el juego con el script principal (builder_example.py).
+- El juego te pedirá por consola a qué habitación quieres moverte. Introduce el número y pulsa Enter.
+- Lee el estado del jugador tras cada acción y sigue hasta visitar todas las habitaciones o agotar el tiempo.
 
-El juego mostrará por consola la evolución del personaje, los encuentros con enemigos y la recogida de recompensas.
+## Diagrama de Clases
 
-## Imágenes y Diagramas
-AÑADIR DIAGRAMAS
+![Diagrama de Clases](img/diagrama_clases.png)
 
-## Autoría y Créditos
-Desarrollado por Francisco del Sol Ontalba para la asignatura Diseño de Software (curso 24-25) en la Universidad de Castilla-La Mancha.
+## Desarrollado por Francisco del Sol Ontalba para la asignatura Diseño de Software (curso 2024-25) en la Universidad de Castilla-La Mancha.
