@@ -95,6 +95,8 @@ El jugador puede moverse escribiendo el número de habitación al que quiere ir.
   ]
 }
 
+```
+
 ---
 
 ## Cómo Jugar
