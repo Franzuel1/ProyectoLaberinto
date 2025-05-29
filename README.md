@@ -107,6 +107,6 @@ El jugador puede moverse escribiendo el número de habitación al que quiere ir.
 
 ## Diagrama de Clases
 
-![Diagrama de Clases](img/diagrama_clases.png)
+![Diagrama_clases](https://github.com/user-attachments/assets/1cbe8464-671c-43d3-a436-054d392708e4)
 
 ## Desarrollado por Francisco del Sol Ontalba para la asignatura Diseño de Software (curso 2024-25) en la Universidad de Castilla-La Mancha.
