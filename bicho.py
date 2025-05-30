@@ -2,6 +2,8 @@ import time
 from modo import Modo
 import random
 from ente import Ente
+from agresivo import Agresivo
+from perezoso import Perezoso
 
 class Bicho(Ente):
     def __init__(self):

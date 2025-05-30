@@ -1,8 +1,8 @@
 import random
 
 class Cofre:
-    def __init__(self, tipo=None, cantidad=None):
-        self.tipo = tipo or random.choice(["puntos", "llaves"])
+    def __init__(self, tipo_recompensa=None, cantidad=None):
+        self.tipo = tipo_recompensa or random.choice(["puntos", "llaves"])
         if cantidad is not None:
             self.cantidad = cantidad
         else:
@@ -22,7 +22,6 @@ class Cofre:
             personaje.llaves += self.cantidad
             print(f"¡Has encontrado un cofre con {self.cantidad} llave(s)!")
         print("💎 --------------------- 💎\n")
-
 
     def recorrer(self, func):
         func(self)
