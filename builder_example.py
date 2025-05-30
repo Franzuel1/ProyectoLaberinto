@@ -22,6 +22,24 @@ juego.lanzarBichos()
 
 try:
     while True:
+        # --- DERROTA POR TIEMPO ---
+        if juego.tiempo_total() >= juego.tiempo_maximo:
+            print("\n⏰ ¡Se ha acabado el tiempo! Has perdido la partida.")
+            juego.finalizar_cronometro()
+            juego.terminarBichos()
+            print(f"Puntuación final: {juego.puntuacion}")
+            print(f"Tiempo total: {juego.tiempo_total():.2f} segundos\n")
+            break
+
+        # --- DERROTA POR VIDAS ---
+        if juego.personaje.vidas <= 0:
+            print("\n💀 ¡Te has quedado sin vidas! Has perdido la partida.")
+            juego.finalizar_cronometro()
+            juego.terminarBichos()
+            print(f"Puntuación final: {juego.puntuacion}")
+            print(f"Tiempo total: {juego.tiempo_total():.2f} segundos\n")
+            break
+
         # Mostrar estado antes de pedir input
         print(f"\n--- ESTADO DEL JUGADOR ---")
         print(f"Puntuación: {juego.puntuacion}")
@@ -39,9 +57,18 @@ try:
             print(f"Tiempo total de partida: {juego.tiempo_total():.2f} segundos")
             print(f"Puntuación final: {juego.puntuacion}")
             break
-        num = int(comando)
+        try:
+            num = int(comando)
+        except ValueError:
+            print("Comando no válido. Introduce un número de habitación o 'salir'.")
+            continue
+
         habitacion_destino = juego.obtenerHabitacion(num)
         habitacion_actual = juego.personaje.posicion
+
+        if habitacion_destino is None:
+            print(f"No existe la habitación {num}.")
+            continue
 
         # Buscar puerta entre habitacion_actual y habitacion_destino
         puerta_encontrada = None

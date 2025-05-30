@@ -1,10 +1,11 @@
-from modo import Modo
-from agresivo import Agresivo
-from ente import Ente
 import time
+from modo import Modo
+import random
+from ente import Ente
 
 class Bicho(Ente):
     def __init__(self):
+        super().__init__()
         self.modo = None
         self.running = True
         self.poder = None
@@ -17,8 +18,18 @@ class Bicho(Ente):
                 self.modo.actuar(self)
             else:
                 print("Bicho haciendo cosas...")
-            time.sleep(2) # Para evitar spam de prints
+            self.mover_aleatorio()  # Después de actuar, se mueve y ataca si toca
+            time.sleep(2)
         print("Bicho termina su hilo porque vidas <= 0")
+
+    def mover_aleatorio(self):
+        if not self.juego or not self.juego.personaje:
+            return
+        destino = self.juego.personaje.posicion
+        if destino != self.posicion:
+            # Se muece a la habitación del personaje (forzar para probar)
+            print(f"{self} se mueve a la habitación del personaje {destino.num}")
+            destino.entrar(self)
 
     def iniAgresivo(self):
         self.modo = Agresivo()
@@ -26,6 +37,7 @@ class Bicho(Ente):
         self.vidas = 5
 
     def iniPerezoso(self):
+        self.modo = Perezoso()
         self.poder = 1
         self.vidas = 5
 
@@ -33,4 +45,4 @@ class Bicho(Ente):
         return self.vidas > 0
 
     def __str__(self):
-        return "Soy un bicho"+self.modo.__str__()
+        return "Soy un bicho" + self.modo.__str__()
