@@ -101,9 +101,6 @@ class Juego:
 
 
     def buscarPersonaje(self, bicho):
-        # Debug: imprime id y num de la habitación
-        print(f"[DEBUG] Bicho {bicho} en Hab {getattr(bicho.posicion, 'num', 'None')} (id={id(bicho.posicion)}) | "
-            f"Personaje en Hab {getattr(self.personaje.posicion, 'num', 'None')} (id={id(self.personaje.posicion)})")
         if bicho.posicion == self.personaje.posicion:
             print(f"El bicho {bicho} ataca al personaje {self.personaje}")
             self.personaje.esAtacadoPor(bicho)
