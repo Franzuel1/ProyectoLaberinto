@@ -8,12 +8,12 @@ from cofre import Cofre
 class Director:
     def __init__(self):
         self.builder = None
-        self.dict=None
+        self.dict = None
 
     def obtenerJuego(self):
         return self.builder.obtenerJuego()
     
-    def procesar(self,unArchivo):
+    def procesar(self, unArchivo):
         self.leerArchivo(unArchivo)
         self.iniBuilder()
         self.fabricarLaberinto()
@@ -24,13 +24,13 @@ class Director:
         self.builder.fabricarJuego()
 
     def iniBuilder(self):
-        if self.dict['forma']=='cuadrado':
-            self.builder=LaberintoBuilder()
+        if self.dict['forma'] == 'cuadrado':
+            self.builder = LaberintoBuilder()
 
     def fabricarLaberinto(self):
         self.builder.fabricarLaberinto()
         for each in self.dict['laberinto']:
-            self.fabricarLaberintoRecursivo(each,'root')
+            self.fabricarLaberintoRecursivo(each, 'root')
         
         for each in self.dict['puertas']:
             # Soporta puertas normales y puertas bloqueadas (con 5 elementos y el diccionario de opciones)
@@ -50,7 +50,8 @@ class Director:
                 if cadaUno.get("tipo") == "cofre":
                     tipo_recompensa = cadaUno.get("tipo_recompensa")
                     cantidad = cadaUno.get("cantidad")
-                    cofre = Cofre(tipo=tipo_recompensa, cantidad=cantidad)
+                    # Cambiado aquí:
+                    cofre = Cofre(tipo_recompensa=tipo_recompensa, cantidad=cantidad)
                     con.agregar_hijo(cofre)
                 else:
                     self.fabricarLaberintoRecursivo(cadaUno, con)
@@ -59,7 +60,7 @@ class Director:
         try:
             with open(filename, 'r') as f:
                 data = json.load(f)
-            self.dict=data
+            self.dict = data
             return data
         except FileNotFoundError:
             print(f"Error: File not found: {filename}")
